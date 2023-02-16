@@ -1,76 +1,126 @@
 let startButtonEl = document.querySelector('.start-game');
 let timerEl = document.querySelector('.timer');
-let mainEl = document.querySelector('.main-title');
+let mainEl = document.querySelector('#questionContainer');
 let contentEl = document.querySelector('.content');
 let secondsLeft = 75;
+let qIndex = 0;
 
 var myQuestions = [
-	{
-		question: "Commonly used data items DO NOT include:",
-		answers: {
-			a: '1. strings',
-			b: '2. booleans',
-			c: '3. alerts',
-            d: '4. numbers'
-		},
-		correctAnswer: 'c'
-	},
-	{
-		question: "The condition in an if/else statement is enclosed with ________.",
-		answers: {
-			a: '1. quotes',
-			b: '2. curly brackets',
-			c: '3. parenthesis',
-            d: '4. square brackets'
-		},
-		correctAnswer: 'c'
-	},
     {
-		question: "Arrays in JavaScript can be used to store ______.",
-		answers: {
-			a: '1. numbers and strings',
-			b: '2. other arrays',
-			c: '3. booleans',
-            d: '4. all of the above'
-		},
-		correctAnswer: 'd'
-	},
+        question: "Commonly used data items DO NOT include:",
+        answers: ['1. strings',
+            '2. booleans',
+            '3. alerts',
+            '4. numbers'],
+        correctAnswer: '3. alerts'
+    },
     {
-		question: "String values must be enclosed within _____ when being assigned to variables.",
-		answers: {
-			a: '1. commas',
-			b: '2. curly brackets',
-			c: '3. quotes',
-            d: '4. parenthesis'
-		},
-		correctAnswer: 'c'
-	},
+        question: "The condition in an if/else statement is enclosed with ________.",
+        answers: [
+            '1. quotes',
+            '2. curly brackets',
+            '3. parenthesis',
+            '4. square brackets'
+        ]
+        ,
+        correctAnswer: '3. parenthesis'
+    },
     {
-		question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-		answers: {
-			a: '1. JavaScript',
-			b: '2. terminal/bash',
-			c: '3. for loops',
-            d: '4. console.log'
-		},
-		correctAnswer: 'd'
-	}
+        question: "Arrays in JavaScript can be used to store ______.",
+        answers: [
+            '1. numbers and strings',
+            '2. other arrays',
+            '3. booleans',
+            '4. all of the above'
+        ],
+        correctAnswer: '4. all of the above'
+    },
+    {
+        question: "String values must be enclosed within _____ when being assigned to variables.",
+        answers: [
+            '1. commas',
+            '2. curly brackets',
+            '3. quotes',
+            '4. parenthesis'
+        ],
+        correctAnswer: '3. quotes'
+    },
+    {
+        question: "A very useful tool used during development and debugging for printing content to the debugger is:",
+        answers: [
+            '1. JavaScript',
+            '2. terminal/bash',
+            '3. for loops',
+            '4. console.log'
+        ],
+        correctAnswer: '4. console.log'
+    }
 ];
+
+var timerInterval;
 startButtonEl.addEventListener('click', function () {
-    var timerInterval = setInterval(function() {
+    timerInterval = setInterval(function () {
         secondsLeft--;
         timerEl.textContent = ("Time " + secondsLeft);
-    
-        if(secondsLeft === 0) {
-          clearInterval(timerInterval);
 
+        if (secondsLeft === 0) {
+            gameOver()
         }
-    
-      }, 1000);
+
+    }, 1000);
+    document.querySelector('.container').classList.add('hidden')
+    mainEl.classList.remove('hidden')
     presentQuestion();
 })
-    function presentQuestion() {
-        mainEl.textContent = myQuestions[0].question;
-        contentEl.textContent = myQuestions[0].answers;
+
+function presentQuestion() {
+    mainEl.innerHTML = ''
+    // create the element to display the question
+    var title = document.createElement('h1')
+    // add the question to the element
+    title.textContent = myQuestions[qIndex].question;
+    // create a container for our buttons
+    var buttonContainer = document.createElement('div')
+    // add the choices to EACH button
+
+    for (let i = 0; i < myQuestions[qIndex].answers.length; i++) {
+
+        // create button El
+        // add
+        // append
+        let buttonAnswer = document.createElement('button')
+        buttonAnswer.textContent = myQuestions[qIndex].answers[i]
+        buttonAnswer.setAttribute('value', myQuestions[qIndex].answers[i])
+        buttonAnswer.addEventListener('click', click)
+        buttonContainer.append(buttonAnswer)
     }
-console.log(timerEl);
+
+    // append all created elements to the question container
+    mainEl.append(title, buttonContainer)
+}
+
+function click() {
+    console.log(this.value);
+    if (this.value !== myQuestions[qIndex].correctAnswer) {
+        secondsLeft -= 10;
+        timerEl.textContent = ("Time " + secondsLeft);
+    }
+    qIndex++
+    if (qIndex === myQuestions.length) {
+        gameOver()
+    } else {
+
+        presentQuestion()
+    }
+
+}
+
+function gameOver() {
+    clearInterval(timerInterval);
+    // hide the question container
+    // show the final container
+}
+
+function submitScore() {
+
+}
