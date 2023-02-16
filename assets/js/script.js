@@ -1,7 +1,9 @@
 let startButtonEl = document.querySelector('.start-game');
+let submitButtonEl = document.querySelector('.submitButton');
 let timerEl = document.querySelector('.timer');
 let mainEl = document.querySelector('#questionContainer');
 let contentEl = document.querySelector('.content');
+let gameOverEl = document.querySelector('#gameOverContainer');
 let secondsLeft = 75;
 let qIndex = 0;
 
@@ -118,7 +120,22 @@ function click() {
 function gameOver() {
     clearInterval(timerInterval);
     // hide the question container
+    mainEl.classList.add("hidden");
     // show the final container
+    gameOverEl.classList.remove("hidden");
+    //add score
+    let finalScore = document.querySelector(".finalScore");
+    finalScore.textContent += "Your final score is " + secondsLeft + ". Enter initials below:";
+    //store high score data
+    let highScore = document.querySelector(".highScore");
+    submitButtonEl.addEventListener('click', function () {
+        console.log(highScore);
+        localStorage.setItem('score', highScore)
+        submitScore()
+    })
+
+    //add functionality to submit button - take to high score
+    
 }
 
 function submitScore() {
