@@ -6,7 +6,7 @@ let contentEl = document.querySelector('.content');
 let gameOverEl = document.querySelector('#gameOverContainer');
 let scoreListEl = document.querySelector('#scoreList');
 let backButtonEl = document.querySelector('.backButton');
-let clearButtonEl =document.querySelector('.clearButton');
+let clearButtonEl = document.querySelector('.clearButton');
 let secondsLeft = 75;
 let qIndex = 0;
 
@@ -64,6 +64,7 @@ var myQuestions = [
 
 var timerInterval;
 startButtonEl.addEventListener('click', function () {
+    secondsLeft = 75;
     timerInterval = setInterval(function () {
         secondsLeft--;
         timerEl.textContent = ("Time " + secondsLeft);
@@ -130,23 +131,32 @@ function gameOver() {
     let finalScore = document.querySelector(".finalScore");
     finalScore.textContent += "Your final score is " + secondsLeft + ". Enter initials below:";
     //store high score data
-    
+
     submitButtonEl.addEventListener('click', function () {
         let highScore = document.querySelector(".highScore").value;
-        console.log(highScore);
         localStorage.setItem('score', highScore)
         submitScore()
     })
 
     //add functionality to submit button - take to high score
-    
+
 }
 
 function submitScore() {
     gameOverEl.classList.add("hidden");
     scoreListEl.classList.remove("hidden");
-    let list = document.createElement('p');
-    localStorage.getItem(highScore);
-    list.textContent = highScore + secondsLeft;
-    scoreListEl.append(list);
+    let scoreKey = localStorage.getItem('score');
+    console.log(scoreKey)
+    let scoresList = document.querySelector(".scoresList");
+    scoresList.textContent += scoreKey + "-" + secondsLeft;
+
+    backButtonEl.addEventListener('click', function () {
+        location.reload();
+    })
+    clearButtonEl.addEventListener('click', function () {
+        scoresList.innerHTML = "";
+    })
+}
+function starOver() {
+
 }
