@@ -6,4 +6,4 @@
 
 https://djamesclark.github.io/Coding-Quiz/
 
-![Alt text](assets/Screenshot.png)
+assets\images\Screenshot.png

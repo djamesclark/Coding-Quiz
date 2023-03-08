@@ -10,6 +10,10 @@ let clearButtonEl = document.querySelector('.clearButton');
 let secondsLeft = 75;
 let qIndex = 0;
 
+let highscoresBtn = document.getElementById('highscoresBtn')
+
+let usersScores = JSON.parse(localStorage.getItem('score')) || []
+
 var myQuestions = [
     {
         question: "Commonly used data items DO NOT include:",
@@ -133,8 +137,14 @@ function gameOver() {
     //store high score data
 
     submitButtonEl.addEventListener('click', function () {
-        let highScore = document.querySelector(".highScore").value;
-        localStorage.setItem('score', highScore)
+        let initals = document.querySelector(".highScore").value;
+
+        let finalScoreObj = {
+            user: initals,
+            score: secondsLeft
+        }
+        usersScores.push(finalScoreObj)
+        localStorage.setItem('score', JSON.stringify(usersScores))
         submitScore()
     })
 
@@ -143,13 +153,21 @@ function gameOver() {
 }
 
 function submitScore() {
+    document.querySelector('.container').classList.add('hidden')
     gameOverEl.classList.add("hidden");
     scoreListEl.classList.remove("hidden");
-    let scoreKey = localStorage.getItem('score');
-    console.log(scoreKey)
+    // let scoreKey = localStorage.getItem('score');
+    // console.log(scoreKey)
     let scoresList = document.querySelector(".scoresList");
-    scoresList.textContent += scoreKey + "-" + secondsLeft;
+    // scoresList.textContent += scoreKey + "-" + secondsLeft;
+const orderedList = document.createElement('ol')
+    for (let i = 0; i < usersScores.length; i++) {
+       const li = document.createElement('li')
 
+       li.textContent = usersScores[i].user + '-' + usersScores[i].score
+        orderedList.append(li)
+    }
+scoresList.append(orderedList)
     backButtonEl.addEventListener('click', function () {
         location.reload();
     })
@@ -157,6 +175,5 @@ function submitScore() {
         scoresList.innerHTML = "";
     })
 }
-function starOver() {
 
-}
+highscoresBtn.addEventListener('click', submitScore)
